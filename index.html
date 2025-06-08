@@ -1,163 +1,27 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BDE B-CUBE</title>
-  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap" rel="stylesheet">
-  <style>
-    /* ... (garde tout le CSS déjà présent, puis ajoute ci-dessous) ... */
-    .evenement {
-      border: 1px solid #cccccc;
-      padding: 16px 18px;
-      margin: 18px 0;
-      border-radius: 8px;
-      background: #f7f7f7;
-      text-align: left;
-    }
-    .evenement h3 {
-      margin: 0 0 8px;
-      color: #15803d;
-    }
-    .evenement p { margin: 3px 0; }
-    #ajout-event-form {
-      margin: 18px 0 25px 0;
-      background: #e6f7ec;
-      padding: 15px 10px 8px 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px #0001;
-      text-align: left;
-    }
-    #ajout-event-form input {
-      margin: 0 10px 10px 0;
-      padding: 5px 7px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    #ajout-event-form button {
-      background: #22c55e;
-      color: #fff;
-      border: none;
-      padding: 7px 18px;
-      border-radius: 4px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    #ajout-event-form button:hover {
-      background: #15803d;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADPREZCUBE</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <div class="logo">BDE B-CUBE</div>
-    <nav>
-      <a href="#" data-section="accueil" class="active">Accueil</a>
-      <a href="#" data-section="evenements">Événements</a>
-      <a href="#" data-section="membres">Membres</a>
-      <a href="#" data-section="contact">Contact</a>
-    </nav>
-  </header>
-  <main>
-    <div id="accueil" class="accueil-message active">
-      Bienvenue sur le site du <b>B-CUBE</b>, BDE de l'ESTP Paris campus de Troyes
-    </div>
-    <div id="evenements" class="section-content">
-      <h2>Événements</h2>
-      <!-- Formulaire d'ajout d'évènement -->
-      <form id="ajout-event-form" autocomplete="off">
-        <input type="text" id="event-nom" placeholder="Nom de l'événement" required>
-        <input type="text" id="event-lieu" placeholder="Lieu" required>
-        <input type="date" id="event-date" required>
-        <input type="text" id="event-prix" placeholder="Prix" required>
-        <button type="submit">Ajouter</button>
-      </form>
-      <!-- Liste des événements -->
-      <div id="liste-evenements">
-        <!-- Les événements s'afficheront ici -->
-      </div>
-    </div>
-    <div id="membres" class="section-content">
-      <h2>Membres</h2>
-      <p><strong>ROSSI Adrien</strong> - Président</p>
-    </div>
-    <div id="contact" class="section-content">
-      <h2>Contact</h2>
-      <p>adrien.rossi@estp.fr</p>
-    </div>
+  <nav>
+    <div class="logo">ADPREZCUBE</div>
+    <ul>
+      <li><a href="#" data-page="home" class="active">Accueil</a></li>
+      <li><a href="#" data-page="events">Événements</a></li>
+      <li><a href="#" data-page="members">Membres</a></li>
+      <li><a href="#" data-page="contact">Contact</a></li>
+    </ul>
+  </nav>
+  <main id="content">
+    <!-- Le contenu dynamique s'affichera ici -->
   </main>
-  <button id="back-to-top" title="Retour en haut">↑</button>
   <footer>
-    &copy; 2024 BDE B-CUBE – ESTP Paris campus Troyes
+    &copy; 2025 ADPREZCUBE — Tous droits réservés
   </footer>
-  <script>
-    // Navigation dynamique (inchangé)
-    document.querySelectorAll('nav a').forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-        this.classList.add('active');
-        document.querySelectorAll('.accueil-message, .section-content').forEach(sec => sec.classList.remove('active'));
-        const section = this.getAttribute('data-section');
-        document.getElementById(section).classList.add('active');
-        window.scrollTo({top: 0, behavior: 'smooth'});
-      });
-    });
-    document.getElementById('accueil').classList.add('active');
-    // Bouton retour en haut (inchangé)
-    const backToTop = document.getElementById('back-to-top');
-    window.addEventListener('scroll', () => {
-      if(window.scrollY > 200) {
-        backToTop.style.display = 'flex';
-      } else {
-        backToTop.style.display = 'none';
-      }
-    });
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    });
-
-    // ----------- Gestion dynamique des événements -----------
-    // Liste d'événements (démo, tu peux en ajouter/retirer)
-    let evenements = [
-      { nom: "Soirée d'intégration", lieu: "ESTP Troyes", date: "2025-09-15", prix: "10€" },
-      { nom: "Tournoi de foot", lieu: "Stade municipal", date: "2025-10-03", prix: "Gratuit" }
-    ];
-    // Fonction pour afficher les événements
-    function afficherEvenements() {
-      const conteneur = document.getElementById('liste-evenements');
-      conteneur.innerHTML = '';
-      if(evenements.length === 0) {
-        conteneur.innerHTML = "<p>Aucun événement à venir.</p>";
-        return;
-      }
-      evenements.forEach(ev => {
-        const eventDiv = document.createElement('div');
-        eventDiv.className = 'evenement';
-        eventDiv.innerHTML = `
-          <h3>${ev.nom}</h3>
-          <p><strong>Lieu :</strong> ${ev.lieu}</p>
-          <p><strong>Date :</strong> ${new Date(ev.date).toLocaleDateString('fr-FR')}</p>
-          <p><strong>Prix :</strong> ${ev.prix}</p>
-        `;
-        conteneur.appendChild(eventDiv);
-      });
-    }
-    // Ajout d'un événement via le formulaire
-    document.getElementById('ajout-event-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const nom = document.getElementById('event-nom').value.trim();
-      const lieu = document.getElementById('event-lieu').value.trim();
-      const date = document.getElementById('event-date').value;
-      const prix = document.getElementById('event-prix').value.trim();
-      if(nom && lieu && date && prix) {
-        evenements.push({ nom, lieu, date, prix });
-        afficherEvenements();
-        this.reset();
-      }
-    });
-    // Affiche la liste au chargement
-    afficherEvenements();
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
