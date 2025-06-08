@@ -4,497 +4,112 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BDE B-CUBE - Bureau des Étudiants</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter&display=swap" rel="stylesheet" />
+  <!-- Firebase CDN (compat pour simplicité) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <style>
-    :root {
-      --color-bg: #ffffff;
-      --color-text-primary: #4A6E2A;
-      --color-text-secondary: #6b7280;
-      --color-primary: #4A6E2A;
-      --color-primary-hover: #3A5B22;
-      --border-radius: 12px;
-      --shadow-light: rgba(0, 0, 0, 0.07);
-      --transition-speed: 0.3s;
-      --container-max-width: 1200px;
-      --spacing-vertical: 4rem;
-    }
-    *, *::before, *::after { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Poppins', 'Inter', sans-serif;
-      background-color: var(--color-bg);
-      color: var(--color-text-secondary);
-      font-size: 18px;
-      line-height: 1.6;
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      display: flex;
-      flex-direction: column;
-    }
-    a { color: inherit; text-decoration: none; }
-    a:focus { outline: 2px solid var(--color-primary); outline-offset: 2px; }
-    .container {
-      max-width: var(--container-max-width);
-      padding: 0 1rem;
-      margin-left: auto;
-      margin-right: auto;
-      width: 100%;
-    }
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1001;
-      background: var(--color-bg);
-      box-shadow: 0 2px 8px var(--shadow-light);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      gap: 1rem;
-    }
-    .logo {
-      font-weight: 800;
-      font-size: 1.75rem;
-      color: var(--color-primary);
-      user-select: none;
-      letter-spacing: 0.05em;
-    }
-    nav {
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-      align-items: center;
-      flex-grow: 1;
-    }
-    nav a {
-      font-weight: 600;
-      font-size: 1rem;
-      color: var(--color-text-secondary);
-      padding: 0.25rem 0.5rem;
-      border-radius: var(--border-radius);
-      transition: color var(--transition-speed) ease, background-color var(--transition-speed) ease;
-      cursor: pointer;
-    }
-    nav a:hover, nav a:focus-visible {
-      color: var(--color-primary);
-      background-color: rgba(0,0,0,0.05);
-      outline: none;
-      transform: scale(1.05);
-    }
-    #admin-toggle {
-      background: var(--color-primary);
-      color: #fff;
-      border: none;
-      border-radius: var(--border-radius);
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color var(--transition-speed), transform var(--transition-speed);
-      user-select: none;
-      white-space: nowrap;
-      display: none;
-    }
-    #admin-toggle:hover, #admin-toggle:focus {
-      background-color: var(--color-primary-hover);
-      outline: none;
-      transform: scale(1.05);
-    }
-    #logout-btn {
-      background: #ef4444;
-      color: #fff;
-      border: none;
-      border-radius: var(--border-radius);
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color var(--transition-speed), transform var(--transition-speed);
-      user-select: none;
-      white-space: nowrap;
-      display: none;
-      margin-left: 1rem;
-    }
-    #logout-btn:hover, #logout-btn:focus {
-      background-color: #b91c1c;
-      outline: none;
-      transform: scale(1.05);
-    }
-    main {
-      flex: 1;
-      width: 100%;
-    }
-    #evenements {
-      max-width: var(--container-max-width);
-      margin-left: auto;
-      margin-right: auto;
-      padding: 2rem 1rem;
-    }
-    #evenements h2 {
-      color: var(--color-primary);
-      font-weight: 700;
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      user-select:none;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
-    }
-    #event-form {
-      background: #f9fafb;
-      border-radius: var(--border-radius);
-      padding: 1.5rem 2rem;
-      box-shadow: 0 6px 20px var(--shadow-light);
-      margin-bottom: 2rem;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-      transition: max-height 0.5s ease, opacity 0.5s ease;
-      overflow: hidden;
-    }
-    #event-form.hidden {
-      max-height: 0;
-      opacity: 0;
-      padding-top: 0;
-      padding-bottom: 0;
-      margin-bottom: 0;
-      pointer-events: none;
-    }
-    #event-form h3 {
-      margin-top: 0;
-      margin-bottom: 1rem;
-      color: var(--color-primary);
-      font-weight: 700;
-      user-select:none;
-    }
-    #event-form label {
-      display: block;
-      margin-bottom: 0.25rem;
-      font-weight: 600;
-      color: var(--color-primary);
-      user-select:none;
-    }
-    #event-form input {
-      width: 100%;
-      padding: 0.5rem 0.75rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: var(--border-radius);
-      font-size: 1rem;
-      font-family: inherit;
-      user-select: text;
-      transition: border-color var(--transition-speed);
-    }
-    #event-form input:focus {
-      border-color: var(--color-primary);
-      outline: none;
-    }
-    #event-form button {
-      background-color: var(--color-primary);
-      color: white;
-      border: none;
-      padding: 0.75rem 2rem;
-      font-weight: 700;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background-color var(--transition-speed), transform var(--transition-speed);
-      user-select:none;
-    }
-    #event-form button:hover, #event-form button:focus {
-      background-color: var(--color-primary-hover);
-      outline: none;
-      transform: scale(1.05);
-    }
-    #event-list {
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .event-card {
-      background: #f9fafb;
-      border-radius: var(--border-radius);
-      padding: 1rem 1.5rem;
-      box-shadow: 0 4px 12px var(--shadow-light);
-      user-select:none;
-      transition: box-shadow 0.3s ease;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      gap: 1rem;
-    }
-    .event-card:hover {
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-    }
-    .event-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-    .event-name {
-      font-weight: 700;
-      font-size: 1.125rem;
-      color: var(--color-primary);
-    }
-    .event-detail {
-      font-size: 0.95rem;
-      color: var(--color-text-secondary);
-      white-space: nowrap;
-      user-select:none;
-    }
-    .event-meta {
-      font-weight: 600;
-      color: var(--color-primary);
-      text-align: right;
-      user-select:none;
-      font-size: 0.95rem;
-    }
-    #auth-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1100;
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    #auth-modal.show {
-      visibility: visible;
-      opacity: 1;
-    }
-    #auth-modal .modal-content {
-      background: var(--color-bg);
-      border-radius: var(--border-radius);
-      max-width: 400px;
-      width: 100%;
-      padding: 2rem;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      position: relative;
-      user-select: none;
-    }
-    #auth-modal h2 {
-      margin-top: 0;
-      color: var(--color-primary);
-      font-weight: 800;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      user-select:none;
-    }
-    #auth-modal form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    #auth-modal label {
-      font-weight: 600;
-      color: var(--color-primary);
-      user-select:none;
-    }
-    #auth-modal input {
-      padding: 0.5rem 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: var(--border-radius);
-      font-size: 1rem;
-      font-family: inherit;
-      transition: border-color var(--transition-speed);
-    }
-    #auth-modal input:focus {
-      border-color: var(--color-primary);
-      outline: none;
-    }
-    #auth-modal button[type="submit"] {
-      background-color: var(--color-primary);
-      color: white;
-      border: none;
-      padding: 0.75rem;
-      font-weight: 700;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      font-size: 1.125rem;
-      transition: background-color var(--transition-speed), transform var(--transition-speed);
-      user-select:none;
-    }
-    #auth-modal button[type="submit"]:hover, #auth-modal button[type="submit"]:focus {
-      background-color: var(--color-primary-hover);
-      outline: none;
-      transform: scale(1.05);
-    }
-    #auth-error {
-      color: #ef4444;
-      font-weight: 600;
-      user-select:none;
-      font-size: 0.9rem;
-    }
-    #auth-toggle-mode {
-      background: none;
-      border: none;
-      color: var(--color-primary);
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: underline;
-      user-select:none;
-      padding: 0;
-      font-size: 1rem;
-      margin-top: 0.5rem;
-      align-self: flex-start;
-    }
-    #auth-toggle-mode:hover, #auth-toggle-mode:focus {
-      color: var(--color-primary-hover);
-      outline: none;
-    }
-    @media (max-width: 600px) {
-      nav { gap: 1rem; }
-      #evenements { padding: 1.5rem 1rem; }
-      #event-form { padding: 1rem 1rem; }
-      .event-card { grid-template-columns: 1fr; gap: 0.5rem; text-align: left; }
-      .event-meta { text-align: left; }
-      #auth-modal .modal-content { max-width: 90vw; padding: 1.5rem; }
-    }
+    body { font-family: 'Poppins', Arial, sans-serif; margin:0; background:#f9fafb; }
+    header { background:#fff; box-shadow:0 2px 12px #0002; padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between;}
+    .logo { font-size:2rem; font-weight:bold; }
+    nav a { margin:0 1rem; color:#333; text-decoration:none; font-weight:600; }
+    nav a:hover { color:#0ea5e9; }
+    main { max-width:600px; margin:2rem auto; background:#fff; box-shadow:0 4px 20px #0001; border-radius:10px; padding:2rem; }
+    h2 { text-align:center; color:#0ea5e9; margin-top:0; }
+    .event-card { border:1px solid #eee; border-radius:8px; padding:1rem; margin:1rem 0; background:#fafbff; display:flex; justify-content:space-between; align-items:center;}
+    .event-name { font-weight:700; font-size:1.2rem; }
+    .event-detail { font-size:0.95rem; color:#333; }
+    .event-meta { font-size:0.95rem; color:#666; text-align:right; }
+    #event-form { margin:2rem 0; }
+    #event-form label { display:block; margin:0.5rem 0 0.2rem; }
+    #event-form input { width:100%; padding:0.5rem; margin-bottom:0.5rem; border-radius:5px; border:1px solid #ccc;}
+    #event-form button { background:#0ea5e9; color:#fff; border:none; border-radius:5px; padding:0.8rem 1.5rem; font-size:1rem; cursor:pointer;}
+    #event-form button:hover { background:#0369a1;}
+    #login-section { text-align:center; margin-top:2rem; }
+    #logout-btn { background:#ef4444; color:white; border:none; border-radius:5px; padding:0.7rem 1.2rem; margin-left:1rem; cursor:pointer;}
+    #logout-btn:hover { background:#b91c1c;}
+    .hidden { display:none;}
+    #error-msg { color:#ef4444; margin:0.5rem 0;}
   </style>
 </head>
 <body>
-  <header role="banner">
-    <div class="logo" aria-label="Logo BDE B-CUBE">BDE B-CUBE</div>
-    <nav role="navigation" aria-label="Menu principal">
-      <a href="#accueil" tabindex="0">Accueil</a>
-      <a href="#evenements" tabindex="0" id="nav-evenements">Événements</a>
-      <a href="#membres" tabindex="0">Membres</a>
-      <a href="#contact" tabindex="0">Contact</a>
+  <header>
+    <div class="logo">BDE B-CUBE</div>
+    <nav>
+      <a href="#">Accueil</a>
+      <a href="#">Événements</a>
+      <a href="#">Membres</a>
+      <a href="#">Contact</a>
     </nav>
-    <button id="admin-toggle" aria-pressed="false" style="display:none;">Mode admin ON</button>
-    <button id="logout-btn" style="display:none;">Se déconnecter</button>
-    <button id="auth-open-btn" style="margin-left:1rem;">Se connecter</button>
+    <div id="admin-controls">
+      <button id="logout-btn" class="hidden">Se déconnecter</button>
+    </div>
   </header>
   <main>
-    <section id="evenements">
-      <h2>Événements</h2>
-      <form id="event-form" class="hidden">
-        <h3>Ajouter un événement</h3>
-        <label for="event-name">Nom</label>
-        <input type="text" id="event-name" name="event-name" required />
-        <label for="event-date">Date</label>
-        <input type="date" id="event-date" name="event-date" required />
-        <label for="event-location">Lieu</label>
-        <input type="text" id="event-location" name="event-location" required />
-        <label for="event-price">Prix (€)</label>
-        <input type="number" id="event-price" name="event-price" min="0" step="0.01" required />
-        <button type="submit">Ajouter</button>
-      </form>
-      <div id="event-list"></div>
-    </section>
-  </main>
-  <div id="auth-modal" aria-modal="true" role="dialog" aria-labelledby="auth-title" aria-describedby="auth-desc" tabindex="-1">
-    <div class="modal-content">
-      <form id="auth-form" autocomplete="off">
-        <h2 id="auth-title">Connexion à BDE B-CUBE</h2>
-        <div id="auth-error" style="color:#ef4444;"></div>
-        <label for="auth-username">Nom d'utilisateur</label>
-        <input type="text" id="auth-username" name="auth-username" required autocomplete="username" />
-        <label for="auth-password">Mot de passe</label>
-        <input type="password" id="auth-password" name="auth-password" required autocomplete="current-password" />
-        <button type="submit">Se connecter</button>
-        <button type="button" id="auth-toggle-mode">Pas encore de compte ? S'inscrire</button>
+    <h2>Événements</h2>
+    <form id="event-form" class="hidden">
+      <label for="event-name">Nom</label>
+      <input type="text" id="event-name" required />
+      <label for="event-date">Date</label>
+      <input type="date" id="event-date" required />
+      <label for="event-location">Lieu</label>
+      <input type="text" id="event-location" required />
+      <label for="event-price">Prix (€)</label>
+      <input type="number" id="event-price" min="0" step="0.01" required />
+      <button type="submit">Ajouter</button>
+    </form>
+    <div id="event-list"></div>
+    <div id="login-section">
+      <form id="login-form">
+        <h3>Connexion Admin</h3>
+        <input type="email" id="login-email" placeholder="Email" required />
+        <input type="password" id="login-password" placeholder="Mot de passe" required />
+        <button type="submit">Connexion</button>
+        <div id="error-msg"></div>
       </form>
     </div>
-  </div>
+  </main>
   <script>
-    const form = document.getElementById('event-form');
+    // Remplace ici par TA configuration Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBWBKgbtFGAVUVCPXD86l4RPOgTqowLFZo",
+      authDomain: "site-bde-8d76c.firebaseapp.com",
+      projectId: "site-bde-8d76c",
+      storageBucket: "site-bde-8d76c.appspot.com",
+      messagingSenderId: "725113813457",
+      appId: "1:725113813457:web:05e2925a793b054a0c48f0",
+      measurementId: "G-THGT9J7Y21"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    // Elements
+    const eventForm = document.getElementById('event-form');
     const eventList = document.getElementById('event-list');
-    const adminToggle = document.getElementById('admin-toggle');
+    const loginSection = document.getElementById('login-section');
+    const loginForm = document.getElementById('login-form');
     const logoutBtn = document.getElementById('logout-btn');
-    const authModal = document.getElementById('auth-modal');
-    const authForm = document.getElementById('auth-form');
-    const authToggleModeBtn = document.getElementById('auth-toggle-mode');
-    const authError = document.getElementById('auth-error');
-    const navEvenements = document.getElementById('nav-evenements');
-    const authOpenBtn = document.getElementById('auth-open-btn');
+    const errorMsg = document.getElementById('error-msg');
 
-    const SESSION_KEY = 'bdbcube_session';
-    const USERS_KEY = 'bdbcube_users';
-    const EVENTS_KEY = 'bdeEvents';
-
-    let authMode = 'login';
-
-    function initUsers() {
-      let users = JSON.parse(localStorage.getItem(USERS_KEY));
-      if (!users) {
-        users = [{ username: 'admin', password: 'admin123', isAdmin: true }];
-        localStorage.setItem(USERS_KEY, JSON.stringify(users));
-      }
-      return users;
-    }
-
-    function getCurrentUser() {
-      const session = JSON.parse(localStorage.getItem(SESSION_KEY));
-      if (session && session.username) {
-        const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
-        return users.find(u => u.username === session.username) || null;
-      }
-      return null;
-    }
-
-    function saveSession(username) {
-      localStorage.setItem(SESSION_KEY, JSON.stringify({ username }));
-    }
-
-    function clearSession() {
-      localStorage.removeItem(SESSION_KEY);
-    }
-
-    function updateAdminControls() {
-      const user = getCurrentUser();
-      if (user && user.isAdmin) {
-        adminToggle.style.display = 'inline-block';
-        logoutBtn.style.display = 'inline-block';
-        adminToggle.setAttribute('aria-pressed', 'true');
-        adminToggle.textContent = 'Mode admin ON';
-        form.classList.remove('hidden');
-      } else {
-        adminToggle.style.display = 'none';
-        logoutBtn.style.display = 'none';
-        adminToggle.setAttribute('aria-pressed', 'false');
-        adminToggle.textContent = 'Mode admin ON';
-        form.classList.add('hidden');
-      }
-    }
-
-    function loadEvents() {
-      const stored = localStorage.getItem(EVENTS_KEY);
-      return stored ? JSON.parse(stored) : [];
-    }
-
-    function saveEvents(events) {
-      localStorage.setItem(EVENTS_KEY, JSON.stringify(events));
-    }
-
+    // Formatage date
     function formatDate(dateStr) {
       const date = new Date(dateStr + 'T00:00:00');
       return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
     }
 
-    function renderEvents() {
-      const events = loadEvents();
-      events.sort((a, b) => new Date(a.date) - new Date(b.date));
+    // Affichage des événements
+    function renderEvents(events) {
       if (events.length === 0) {
-        eventList.innerHTML = '<p style="color: var(--color-text-secondary); text-align:center;">Aucun événement à venir pour le moment.</p>';
+        eventList.innerHTML = '<p style="color: #999; text-align:center;">Aucun événement à venir pour le moment.</p>';
         return;
       }
       eventList.innerHTML = '';
       events.forEach(ev => {
         const el = document.createElement('div');
         el.className = 'event-card';
-        el.setAttribute('tabindex', '0');
-        el.setAttribute('role', 'region');
-        el.setAttribute('aria-label', `Événement ${ev.name}`);
         el.innerHTML = `
-          <div class="event-info">
+          <div>
             <div class="event-name">${ev.name}</div>
             <div class="event-detail">Lieu : ${ev.location}</div>
             <div class="event-detail">Prix : ${ev.price} €</div>
@@ -505,152 +120,78 @@
       });
     }
 
-    form.addEventListener('submit', function(e) {
+    // Synchro en temps réel
+    db.collection('evenements').orderBy('date')
+      .onSnapshot(snapshot => {
+        const events = [];
+        snapshot.forEach(doc => events.push(doc.data()));
+        renderEvents(events);
+      });
+
+    // Login admin
+    loginForm.onsubmit = async (e) => {
       e.preventDefault();
-      const name = form['event-name'].value.trim();
-      const date = form['event-date'].value;
-      const location = form['event-location'].value.trim();
-      const priceRaw = form['event-price'].value;
-      const price = priceRaw ? parseFloat(priceRaw).toFixed(2) : '';
+      errorMsg.textContent = '';
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      try {
+        const cred = await auth.signInWithEmailAndPassword(email, password);
+        // Vérifie claim admin
+        const idTokenResult = await cred.user.getIdTokenResult();
+        if (idTokenResult.claims.admin === true) {
+          eventForm.classList.remove('hidden');
+          loginSection.classList.add('hidden');
+          logoutBtn.classList.remove('hidden');
+        } else {
+          errorMsg.textContent = "Droits insuffisants.";
+          auth.signOut();
+        }
+      } catch (err) {
+        errorMsg.textContent = "Email ou mot de passe invalide.";
+      }
+    };
+
+    logoutBtn.onclick = () => {
+      auth.signOut();
+      eventForm.classList.add('hidden');
+      loginSection.classList.remove('hidden');
+      logoutBtn.classList.add('hidden');
+    };
+
+    // Ajout événement (admin)
+    eventForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('event-name').value.trim();
+      const date = document.getElementById('event-date').value;
+      const location = document.getElementById('event-location').value.trim();
+      const price = parseFloat(document.getElementById('event-price').value).toFixed(2);
       if (!name || !date || !location || isNaN(price)) {
         alert('Veuillez remplir tous les champs correctement.');
         return;
       }
-      const events = loadEvents();
-      events.push({ name, date, location, price });
-      saveEvents(events);
-      renderEvents();
-      form.reset();
-      form['event-name'].focus();
-    });
+      await db.collection('evenements').add({ name, date, location, price });
+      eventForm.reset();
+      document.getElementById('event-name').focus();
+    };
 
-    authForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      authError.textContent = '';
-      const username = authForm['auth-username'].value.trim();
-      const password = authForm['auth-password'].value;
-      if (!username || !password) {
-        authError.textContent = 'Veuillez remplir tous les champs.';
-        return;
-      }
-      let users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
-      if (authMode === 'login') {
-        const user = users.find(u => u.username.toLowerCase() === username.toLowerCase());
-        if (!user || user.password !== password) {
-          authError.textContent = 'Identifiants incorrects.';
-          return;
-        }
-        saveSession(user.username);
-        closeAuthModal();
-        postLoginSetup();
-      } else {
-        if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
-          authError.textContent = 'Ce nom d\'utilisateur existe déjà.';
-          return;
-        }
-        users.push({ username, password, isAdmin: false });
-        localStorage.setItem(USERS_KEY, JSON.stringify(users));
-        saveSession(username);
-        closeAuthModal();
-        postLoginSetup();
-      }
-    });
-
-    authToggleModeBtn.addEventListener('click', () => {
-      if (authMode === 'login') {
-        authMode = 'register';
-        authForm.querySelector('h2').textContent = 'Inscription BDE B-CUBE';
-        authForm.querySelector('button[type="submit"]').textContent = "S'inscrire";
-        authToggleModeBtn.textContent = 'Déjà un compte ? Se connecter';
-        authError.textContent = '';
-      } else {
-        authMode = 'login';
-        authForm.querySelector('h2').textContent = 'Connexion à BDE B-CUBE';
-        authForm.querySelector('button[type="submit"]').textContent = "Se connecter";
-        authToggleModeBtn.textContent = "Pas encore de compte ? S'inscrire";
-        authError.textContent = '';
-      }
-      authForm.reset();
-      authForm['auth-username'].focus();
-    });
-
-    function closeAuthModal() {
-      authModal.classList.remove('show');
-    }
-
-    function showAuthModal() {
-      authModal.classList.add('show');
-      authForm.reset();
-      authForm['auth-username'].focus();
-      authError.textContent = '';
-    }
-
-    function updateAuthButton() {
-      const user = getCurrentUser();
+    // Surveille login/logout
+    auth.onAuthStateChanged(async user => {
       if (user) {
-        authOpenBtn.textContent = 'Se déconnecter';
+        const idTokenResult = await user.getIdTokenResult();
+        if (idTokenResult.claims.admin === true) {
+          eventForm.classList.remove('hidden');
+          loginSection.classList.add('hidden');
+          logoutBtn.classList.remove('hidden');
+        } else {
+          eventForm.classList.add('hidden');
+          loginSection.classList.remove('hidden');
+          logoutBtn.classList.add('hidden');
+        }
       } else {
-        authOpenBtn.textContent = 'Se connecter';
+        eventForm.classList.add('hidden');
+        loginSection.classList.remove('hidden');
+        logoutBtn.classList.add('hidden');
       }
-    }
-
-    function postLoginSetup() {
-      updateAdminControls();
-      renderEvents();
-      updateAuthButton();
-    }
-
-    authOpenBtn.addEventListener('click', () => {
-      if (getCurrentUser()) {
-        clearSession();
-        updateAdminControls();
-        renderEvents();
-        updateAuthButton();
-      } else {
-        showAuthModal();
-      }
-    });
-
-    logoutBtn.addEventListener('click', () => {
-      clearSession();
-      updateAdminControls();
-      renderEvents();
-      updateAuthButton();
-      showAuthModal();
-    });
-
-    adminToggle.addEventListener('click', () => {
-      const isHidden = form.classList.contains('hidden');
-      if (isHidden) {
-        form.classList.remove('hidden');
-        adminToggle.textContent = 'Mode admin ON';
-        adminToggle.setAttribute('aria-pressed', 'true');
-      } else {
-        form.classList.add('hidden');
-        adminToggle.textContent = 'Mode admin OFF';
-        adminToggle.setAttribute('aria-pressed', 'false');
-      }
-    });
-
-    navEvenements.addEventListener('click', (e) => {
-      e.preventDefault();
-      document.getElementById('evenements').scrollIntoView({ behavior: 'smooth' });
-    });
-
-    function checkSession() {
-      const user = getCurrentUser();
-      if (user) {
-        postLoginSetup();
-        closeAuthModal();
-      } else {
-        showAuthModal();
-      }
-    }
-
-    initUsers();
-    document.addEventListener('DOMContentLoaded', () => {
-      checkSession();
-      renderEvents();
     });
   </script>
 </body>
