@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BDE B-CUBE - Bureau des Étudiants</title>
+  <!-- Firebase CDN (compat pour simplicité) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <style>
+    body { font-family: 'Poppins', Arial, sans-serif; margin:0; background:#f9fafb; }
+    header { background:#fff; box-shadow:0 2px 12px #0002; padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between;}
+    .logo { font-size:2rem; font-weight:bold; }
+    nav a { margin:0 1rem; color:#333; text-decoration:none; font-weight:600; }
+    nav a:hover { color:#0ea5e9; }
+    main { max-width:600px; margin:2rem auto; background:#fff; box-shadow:0 4px 20px #0001; border-radius:10px; padding:2rem; }
+    h2 { text-align:center; color:#0ea5e9; margin-top:0; }
+    .event-card { border:1px solid #eee; border-radius:8px; padding:1rem; margin:1rem 0; background:#fafbff; display:flex; justify-content:space-between; align-items:center;}
+    .event-name { font-weight:700; font-size:1.2rem; }
+    .event-detail { font-size:0.95rem; color:#333; }
+    .event-meta { font-size:0.95rem; color:#666; text-align:right; }
+    #event-form { margin:2rem 0; }
+    #event-form label { display:block; margin:0.5rem 0 0.2rem; }
+    #event-form input { width:100%; padding:0.5rem; margin-bottom:0.5rem; border-radius:5px; border:1px solid #ccc;}
+    #event-form button { background:#0ea5e9; color:#fff; border:none; border-radius:5px; padding:0.8rem 1.5rem; font-size:1rem; cursor:pointer;}
+    #event-form button:hover { background:#0369a1;}
+    #login-section { text-align:center; margin-top:2rem; }
+    #logout-btn { background:#ef4444; color:white; border:none; border-radius:5px; padding:0.7rem 1.2rem; margin-left:1rem; cursor:pointer;}
+    #logout-btn:hover { background:#b91c1c;}
+    .hidden { display:none;}
+    #error-msg { color:#ef4444; margin:0.5rem 0;}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">BDE B-CUBE</div>
+    <nav>
+      <a href="#">Accueil</a>
+      <a href="#">Événements</a>
+      <a href="#">Membres</a>
+      <a href="#">Contact</a>
+    </nav>
+    <div id="admin-controls">
+      <button id="logout-btn" class="hidden">Se déconnecter</button>
+    </div>
+  </header>
+  <main>
+    <h2>Événements</h2>
+    <form id="event-form" class="hidden">
+      <label for="event-name">Nom</label>
+      <input type="text" id="event-name" required />
+      <label for="event-date">Date</label>
+      <input type="date" id="event-date" required />
+      <label for="event-location">Lieu</label>
+      <input type="text" id="event-location" required />
+      <label for="event-price">Prix (€)</label>
+      <input type="number" id="event-price" min="0" step="0.01" required />
+      <button type="submit">Ajouter</button>
+    </form>
+    <div id="event-list"></div>
+    <div id="login-section">
+      <form id="login-form">
+        <h3>Connexion Admin</h3>
+        <input type="email" id="login-email" placeholder="Email" required />
+        <input type="password" id="login-password" placeholder="Mot de passe" required />
+        <button type="submit">Connexion</button>
+        <div id="error-msg"></div>
+      </form>
+    </div>
+  </main>
+  <script>
+    // Remplace ici par TA configuration Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBWBKgbtFGAVUVCPXD86l4RPOgTqowLFZo",
+      authDomain: "site-bde-8d76c.firebaseapp.com",
+      projectId: "site-bde-8d76c",
+      storageBucket: "site-bde-8d76c.appspot.com",
+      messagingSenderId: "725113813457",
+      appId: "1:725113813457:web:05e2925a793b054a0c48f0",
+      measurementId: "G-THGT9J7Y21"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    // Elements
+    const eventForm = document.getElementById('event-form');
+    const eventList = document.getElementById('event-list');
+    const loginSection = document.getElementById('login-section');
+    const loginForm = document.getElementById('login-form');
+    const logoutBtn = document.getElementById('logout-btn');
+    const errorMsg = document.getElementById('error-msg');
+
+    // Formatage date
+    function formatDate(dateStr) {
+      const date = new Date(dateStr + 'T00:00:00');
+      return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    // Affichage des événements
+    function renderEvents(events) {
+      if (events.length === 0) {
+        eventList.innerHTML = '<p style="color: #999; text-align:center;">Aucun événement à venir pour le moment.</p>';
+        return;
+      }
+      eventList.innerHTML = '';
+      events.forEach(ev => {
+        const el = document.createElement('div');
+        el.className = 'event-card';
+        el.innerHTML = `
+          <div>
+            <div class="event-name">${ev.name}</div>
+            <div class="event-detail">Lieu : ${ev.location}</div>
+            <div class="event-detail">Prix : ${ev.price} €</div>
+          </div>
+          <div class="event-meta">${formatDate(ev.date)}</div>
+        `;
+        eventList.appendChild(el);
+      });
+    }
+
+    // Synchro en temps réel
+    db.collection('evenements').orderBy('date')
+      .onSnapshot(snapshot => {
+        const events = [];
+        snapshot.forEach(doc => events.push(doc.data()));
+        renderEvents(events);
+      });
+
+    // Login admin
+    loginForm.onsubmit = async (e) => {
+      e.preventDefault();
+      errorMsg.textContent = '';
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      try {
+        const cred = await auth.signInWithEmailAndPassword(email, password);
+        // Vérifie claim admin
+        const idTokenResult = await cred.user.getIdTokenResult();
+        if (idTokenResult.claims.admin === true) {
+          eventForm.classList.remove('hidden');
+          loginSection.classList.add('hidden');
+          logoutBtn.classList.remove('hidden');
+        } else {
+          errorMsg.textContent = "Droits insuffisants.";
+          auth.signOut();
+        }
+      } catch (err) {
+        errorMsg.textContent = "Email ou mot de passe invalide.";
+      }
+    };
+
+    logoutBtn.onclick = () => {
+      auth.signOut();
+      eventForm.classList.add('hidden');
+      loginSection.classList.remove('hidden');
+      logoutBtn.classList.add('hidden');
+    };
+
+    // Ajout événement (admin)
+    eventForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('event-name').value.trim();
+      const date = document.getElementById('event-date').value;
+      const location = document.getElementById('event-location').value.trim();
+      const price = parseFloat(document.getElementById('event-price').value).toFixed(2);
+      if (!name || !date || !location || isNaN(price)) {
+        alert('Veuillez remplir tous les champs correctement.');
+        return;
+      }
+      await db.collection('evenements').add({ name, date, location, price });
+      eventForm.reset();
+      document.getElementById('event-name').focus();
+    };
+
+    // Surveille login/logout
+    auth.onAuthStateChanged(async user => {
+      if (user) {
+        const idTokenResult = await user.getIdTokenResult();
+        if (idTokenResult.claims.admin === true) {
+          eventForm.classList.remove('hidden');
+          loginSection.classList.add('hidden');
+          logoutBtn.classList.remove('hidden');
+        } else {
+          eventForm.classList.add('hidden');
+          loginSection.classList.remove('hidden');
+          logoutBtn.classList.add('hidden');
+        }
+      } else {
+        eventForm.classList.add('hidden');
+        loginSection.classList.remove('hidden');
+        logoutBtn.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
