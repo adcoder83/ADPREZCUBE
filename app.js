@@ -1,31 +1,21 @@
 const pages = {
   home: `
     <section class="fade">
-      <h1>Bienvenue sur ADPREZCUBE</h1>
+      <h1>Bienvenue sur le site du B-CUBE, BDE de l'ESTP Paris campus de troyes</h1>
       <p>
-        ADPREZCUBE est une communauté dynamique dédiée à l'organisation d'événements, à la connexion entre membres et au partage d'idées innovantes.
+        B-CUBE est un BDE dynamique dédiée à l'organisation d'événements, à la connexion entre membres et au partage d'idées innovantes.
       </p>
       <p>
-        Rejoignez-nous pour découvrir nos prochains événements, rencontrer nos membres, et participer à nos activités !
-      </p>
-      <a class="btn" href="#" data-page="events">Voir les événements</a>
-    </section>
+        
   `,
   events: `
     <section class="fade">
       <h1>Événements à venir</h1>
       <ul>
         <li>
-          <h2>Journée Innovation</h2>
-          <p>Date : 21/06/2025 — Lieu : Salle Polyvalente</p>
-          <p>Une journée dédiée à l'innovation et à la créativité. Ateliers, conférences, networking…</p>
-        </li>
-        <li>
-          <h2>Soirée Jeux</h2>
-          <p>Date : 12/07/2025 — Lieu : Café des Arts</p>
-          <p>Venez vous amuser et rencontrer les autres membres de la communauté dans une ambiance conviviale !</p>
-        </li>
-      </ul>
+          <h2>Journée Integration</h2>
+          <p>Date : 8/09/2025 — Lieu : École</p>
+       
       <p style="margin-top:2em;color:var(--kaki);">D'autres événements sont à venir. Restez connectés !</p>
     </section>
   `,
