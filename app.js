@@ -17,19 +17,27 @@ const pages = {
       <h1>Événements à venir</h1>
       <div class="event-list">
         <div class="event-card">
-          <div class="event-date">8/09/2025</div>
+          <div class="event-date">Lun 25/09</div>
           <div>
-            <h2>Journée d’Intégration</h2>
-            <p class="event-place">Lieu : École</p>
-            <p>Un moment clé pour accueillir les nouveaux étudiants, faire connaissance et lancer l’année dans une ambiance festive.</p>
+            <h2>Tournoi foot</h2>
+            <p class="event-place">Lieu : Stade de l'école</p>
+            <p>Tournoi de football ouvert à tous les étudiants. Compose ton équipe !</p>
           </div>
         </div>
-        <div class="event-card next">
-          <div class="event-date">Bientôt</div>
+        <div class="event-card">
+          <div class="event-date">Mer 17/09</div>
           <div>
-            <h2>Prochains événements</h2>
-            <p class="event-place">À venir</p>
-            <p>Restez connectés, de nombreux événements sont en préparation pour la communauté B-CUBE !</p>
+            <h2>Barbecuite</h2>
+            <p class="event-place">Lieu : Lac d'Orient</p>
+            <p>Soirée barbecue géante pour bien commencer l’année dans la convivialité !</p>
+          </div>
+        </div>
+        <div class="event-card">
+          <div class="event-date">Jeu 18/09</div>
+          <div>
+            <h2>Départ pour le WEB</h2>
+            <p class="event-place">18/09 au 21/09</p>
+            <p>Début du week-end d'intégration tant attendu. Prépare-toi à vivre une expérience inoubliable !</p>
           </div>
         </div>
       </div>
