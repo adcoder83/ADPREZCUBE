@@ -189,9 +189,25 @@ function setupNav() {
   });
 }
 
+// Ajout menu mobile hamburger
+function setupMobileMenu() {
+  const menuBtn = document.querySelector('.menu-toggle');
+  const navList = document.querySelector('nav ul');
+  if (menuBtn && navList) {
+    menuBtn.onclick = () => {
+      navList.classList.toggle('open');
+    };
+    // Fermer le menu quand on clique sur un lien
+    navList.querySelectorAll('a').forEach(link => {
+      link.onclick = () => navList.classList.remove('open');
+    });
+  }
+}
+
 function loadPage(page) {
   document.getElementById('content').innerHTML = pages[page];
   setupNav(); // Réactive les liens dynamiques insérés dans le DOM
+  setupMobileMenu(); // Pour que le menu fonctionne aussi sur pages dynamiques
   if (page === "contact") {
     const form = document.getElementById('contactForm');
     form.addEventListener('submit', function(e) {
@@ -212,4 +228,5 @@ function setActiveNav(page) {
 document.addEventListener('DOMContentLoaded', function() {
   loadPage('home');
   setupNav();
+  setupMobileMenu();
 });
