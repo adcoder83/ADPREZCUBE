@@ -35,6 +35,40 @@ const pages = {
       </div>
     </section>
   `,
+  avantages: `
+    <section class="fade">
+      <h1>Avantages Carte Cube</h1>
+      <p class="subtitle">La carte Cube vous donne accès à de nombreux avantages :</p>
+      <ul>
+        <li>Réductions dans les bars et restaurants partenaires.</li>
+        <li>Tarifs préférentiels pour les événements.</li>
+        <li>Accès prioritaire aux activités sportives et culturelles.</li>
+        <li>Promotions exclusives sur les goodies du BDE.</li>
+      </ul>
+    </section>
+  `,
+  partenariats: `
+    <section class="fade">
+      <h1>Partenariats</h1>
+      <p class="subtitle">Nos partenaires et leurs offres :</p>
+      <div class="event-list">
+        <div class="event-card">
+          <div class="event-date">Logo</div>
+          <div>
+            <h2>Partenaire 1</h2>
+            <p>Réduction de 10% pour les membres.</p>
+          </div>
+        </div>
+        <div class="event-card">
+          <div class="event-date">Logo</div>
+          <div>
+            <h2>Partenaire 2</h2>
+            <p>Offre spéciale pour les étudiants de l’ESTP.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  `,
   members: `
     <section class="fade">
       <h1>Notre équipe</h1>
@@ -140,9 +174,9 @@ const pages = {
   `
 };
 
-// Gestion de la navigation dynamique
+// Gestion de la navigation dynamique (y compris les liens insérés dynamiquement)
 function setupNav() {
-  document.querySelectorAll('nav a, .btn').forEach(link => {
+  document.querySelectorAll('nav a, .btn, .inline-link').forEach(link => {
     link.addEventListener('click', function(e) {
       const page = this.getAttribute('data-page');
       if (page && pages[page]) {
