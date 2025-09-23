@@ -6,72 +6,39 @@ const pages = {
         Le Bureau des Élèves de l’ESTP Paris, campus de Troyes.<br>
         Nous connectons, organisons et innovons pour faire de chaque moment une expérience inoubliable au sein du campus !
       </p>
-      <div class="home-cta">
-        <a href="#" class="btn" data-page="events">Voir les événements à venir</a>
-        <a href="#" class="btn outline" data-page="contact">Nous contacter</a>
-      </div>
-    </section>
-  `,
-  events: `
-    <section class="fade">
-      <h1>Événements à venir</h1>
-      <div class="event-list">
-        <div class="event-card">
-          <div class="event-date">Lun 25/09</div>
-          <div>
-            <h2>Tournoi foot</h2>
-            <p class="event-place">Lieu : Stade de l'école</p>
-            <p>Tournoi de football ouvert à tous les étudiants. Compose ton équipe !</p>
-          </div>
-        </div>
-        <div class="event-card">
-          <div class="event-date">Mer 17/09</div>
-          <div>
-            <h2>Barbecuite</h2>
-            <p class="event-place">Lieu : Lac d'Orient</p>
-            <p>Soirée barbecue géante pour bien commencer l’année dans la convivialité !</p>
-          </div>
-        </div>
-        <div class="event-card">
-          <div class="event-date">Jeu 18/09</div>
-          <div>
-            <h2>Départ pour le WEB</h2>
-            <p class="event-place">18/09 au 21/09</p>
-            <p>Début du week-end d'intégration tant attendu. Prépare-toi à vivre une expérience inoubliable !</p>
-          </div>
-        </div>
-      </div>
     </section>
   `,
   avantages: `
     <section class="fade">
       <h1>Avantages Carte Cube</h1>
-      <p class="subtitle">La carte Cube vous donne accès à de nombreux avantages :</p>
-      <ul>
-        <li>Réductions dans les bars et restaurants partenaires.</li>
-        <li>Tarifs préférentiels pour les événements.</li>
-        <li>Accès prioritaire aux activités sportives et culturelles.</li>
-        <li>Promotions exclusives sur les goodies du BDE.</li>
-      </ul>
-    </section>
-  `,
-  partenariats: `
-    <section class="fade">
-      <h1>Partenariats</h1>
-      <p class="subtitle">Nos partenaires et leurs offres :</p>
-      <div class="event-list">
-        <div class="event-card">
-          <div class="event-date">Logo</div>
-          <div>
-            <h2>Partenaire 1</h2>
-            <p>Réduction de 10% pour les membres.</p>
+      <p class="subtitle">Présente ta carte Cube et bénéficie de ces avantages :</p>
+      <div class="avantages-list">
+        <div class="avantage-partenaire">
+          <div class="avantage-logo">
+            <!-- Remplace le src par le chemin/nom de ton vrai logo -->
+            <img src="img/bar-du-coin.png" alt="Logo Bar du Coin">
+          </div>
+          <div class="avantage-desc">
+            <h3>Bar du Coin</h3>
+            <p>Happy hour toute la soirée sur présentation de la carte Cube + 10% sur toutes les consos !</p>
           </div>
         </div>
-        <div class="event-card">
-          <div class="event-date">Logo</div>
-          <div>
-            <h2>Partenaire 2</h2>
-            <p>Offre spéciale pour les étudiants de l’ESTP.</p>
+        <div class="avantage-partenaire">
+          <div class="avantage-logo">
+            <img src="img/pizza-max.png" alt="Logo Pizza Max">
+          </div>
+          <div class="avantage-desc">
+            <h3>Pizza Max</h3>
+            <p>1 pizza achetée = 1 soda offert à emporter, valable tous les jours.</p>
+          </div>
+        </div>
+        <div class="avantage-partenaire">
+          <div class="avantage-logo">
+            <img src="img/sport2000.png" alt="Logo Sport 2000">
+          </div>
+          <div class="avantage-desc">
+            <h3>Sport 2000</h3>
+            <p>15% de remise sur tout le magasin (hors promotions en cours et soldes).</p>
           </div>
         </div>
       </div>
@@ -162,27 +129,11 @@ const pages = {
           </div>
         </div>
       </div>
-      <p class="join-text">Envie de rejoindre l’équipe ? <a href="#" data-page="contact" class="inline-link">Contacte-nous</a> !</p>
-    </section>
-  `,
-  contact: `
-    <section class="fade">
-      <h1>Contact</h1>
-      <form id="contactForm" autocomplete="off">
-        <label for="name">Nom</label>
-        <input type="text" name="name" id="name" required>
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" required>
-        <label for="message">Message</label>
-        <textarea name="message" id="message" rows="5" required></textarea>
-        <button type="submit" class="btn">Envoyer</button>
-        <div id="formMsg" style="margin-top:12px;"></div>
-      </form>
     </section>
   `
 };
 
-// Gestion de la navigation dynamique (y compris les liens insérés dynamiquement)
+// Navigation dynamique
 function setupNav() {
   document.querySelectorAll('nav a, .btn, .inline-link').forEach(link => {
     link.addEventListener('click', function(e) {
@@ -197,7 +148,6 @@ function setupNav() {
   });
 }
 
-// Ajout menu mobile hamburger
 function setupMobileMenu() {
   const menuBtn = document.querySelector('.menu-toggle');
   const navList = document.querySelector('nav ul');
@@ -205,7 +155,6 @@ function setupMobileMenu() {
     menuBtn.onclick = () => {
       navList.classList.toggle('open');
     };
-    // Fermer le menu quand on clique sur un lien
     navList.querySelectorAll('a').forEach(link => {
       link.onclick = () => navList.classList.remove('open');
     });
@@ -214,16 +163,8 @@ function setupMobileMenu() {
 
 function loadPage(page) {
   document.getElementById('content').innerHTML = pages[page];
-  setupNav(); // Réactive les liens dynamiques insérés dans le DOM
-  setupMobileMenu(); // Pour que le menu fonctionne aussi sur pages dynamiques
-  if (page === "contact") {
-    const form = document.getElementById('contactForm');
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      document.getElementById('formMsg').innerHTML = "<span style='color:var(--green);font-weight:500;'>Merci pour votre message ! Nous vous répondrons rapidement.</span>";
-      form.reset();
-    });
-  }
+  setupNav();
+  setupMobileMenu();
 }
 
 function setActiveNav(page) {
@@ -232,7 +173,6 @@ function setActiveNav(page) {
   });
 }
 
-// Initialisation au chargement
 document.addEventListener('DOMContentLoaded', function() {
   loadPage('home');
   setupNav();
