@@ -3,37 +3,37 @@ const avantagesCube = [
     title: "Patinoire des 3 Seines",
     description: "Entrée à 4,50€ au lieu de 5,80€.",
     conditions: "Sur présentation de la carte Cube à l’accueil.",
-    logo: "" // Pas de logo officiel trouvé, à compléter si disponible (site: https://patinoire3seine.fr)
+    logo: "https://contents.mediadecathlon.com/s945865/k$e9bfb50635643bcf369860ce50b55b38/1800x0/1778pt1067/2844xcr2133/patins-a-glace.jpeg?format=auto" // Pas de logo officiel trouvé, à compléter si disponible (site: https://patinoire3seine.fr)
   },
   {
     title: "McArthur Glen",
     description: "Accès au pass VIP à l’accueil en présentant la carte Cube (donne des réductions et avantages exclusifs dans les boutiques partenaires).",
     conditions: "Sur présentation de la carte Cube à l'accueil.",
-    logo: "https://seeklogo.com/vector-logo/548755/mcarthurglen"
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX5_ZoYlC7kylSZJnx0rQ25xkJrq1dBzPsmw&s"
   },
   {
     title: "Father and Sons",
-    description: "Deux fois par an, pendant une semaine, costumes + chemise + cravate pour seulement 2€.",
+    description: "Deux fois par an, pendant une semaine, costumes + chemise + cravate pour seulement 200€.",
     conditions: "Dates communiquées par le BDE. Offre réservée aux détenteurs de la carte Cube.",
-    logo: "https://brandfetch.com/fatherandsons.fr" // Style guide et médias officiels sur cette URL
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9sCYzX6fnTXSMTlohM97HKsVYjk3qnRNnig&s" // Style guide et médias officiels sur cette URL
   },
   {
     title: "Five Pizza",
     description: "Pour une pizza achetée, une boisson offerte.",
     conditions: "Valable toute l’année sur présentation de la carte Cube.",
-    logo: "https://commons.wikimedia.org/wiki/File:Pie_Five_Pizza_logo_2019.png" // Logo Pie Five Pizza (à remplacer si autre enseigne locale)
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKxN01Cd91zDZOErgkE2nceVHi6Z7KWxJsFw&s" // Logo Pie Five Pizza (à remplacer si autre enseigne locale)
   },
   {
     title: "Burger King",
     description: "-10% sur une commande par jour.",
     conditions: "Sur présentation de la carte Cube à la caisse.",
-    logo: "https://seeklogo.com/vector-logo/23687/burger-king"
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4251b_yCCjqSyqcuDkGDEP0Yz2nPSRp0lGQ&s"
   },
   {
     title: "Anousti Fast Food",
     description: "Boisson offerte sur le menu kebab, menu pita et menu tacos.",
     conditions: "Offre valable uniquement avec la carte Cube.",
-    logo: "" // Logo non trouvé (site : http://anousti.fr/), à compléter si obtenu
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQop7-QHdQOG8FuC_urwrOCuYI_XCT7z5Pjbg&s" // Logo non trouvé (site : http://anousti.fr/), à compléter si obtenu
   }
 ];
 
