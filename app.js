@@ -15,30 +15,62 @@ const pages = {
       <div class="avantages-list">
         <div class="avantage-partenaire">
           <div class="avantage-logo">
-            <!-- Remplace le src par le chemin/nom de ton vrai logo -->
-            <img src="img/bar-du-coin.png" alt="Logo Bar du Coin">
+            <img src="img/patinoire-3-seines.png" alt="Logo Patinoire des 3 Seines">
           </div>
           <div class="avantage-desc">
-            <h3>Bar du Coin</h3>
-            <p>Happy hour toute la soirée sur présentation de la carte Cube + 10% sur toutes les consos !</p>
+            <h3>Patinoire des 3 Seines</h3>
+            <p>Entrée à <b>4,50€</b> au lieu de 5,80€.</p>
+            <small>Sur présentation de la carte Cube à l’accueil.</small>
           </div>
         </div>
         <div class="avantage-partenaire">
           <div class="avantage-logo">
-            <img src="img/pizza-max.png" alt="Logo Pizza Max">
+            <img src="img/mcarthur-glen.png" alt="Logo McArthur Glen">
           </div>
           <div class="avantage-desc">
-            <h3>Pizza Max</h3>
-            <p>1 pizza achetée = 1 soda offert à emporter, valable tous les jours.</p>
+            <h3>Magasins d'usines McArthur Glen</h3>
+            <p>Accès au <b>pass VIP</b> à l’accueil en présentant la carte Cube.</p>
+            <small>Donne des réductions et avantages exclusifs dans les boutiques partenaires.</small>
           </div>
         </div>
         <div class="avantage-partenaire">
           <div class="avantage-logo">
-            <img src="img/sport2000.png" alt="Logo Sport 2000">
+            <img src="img/father-and-sons.png" alt="Logo Father and Sons">
           </div>
           <div class="avantage-desc">
-            <h3>Sport 2000</h3>
-            <p>15% de remise sur tout le magasin (hors promotions en cours et soldes).</p>
+            <h3>Father and Sons</h3>
+            <p>Deux fois par an, pendant une semaine : <b>costume + chemise + cravate pour seulement 2€</b>.</p>
+            <small>Dates communiquées par le BDE. Offre réservée aux détenteurs de la carte Cube.</small>
+          </div>
+        </div>
+        <div class="avantage-partenaire">
+          <div class="avantage-logo">
+            <img src="img/five-pizza.png" alt="Logo Five Pizza">
+          </div>
+          <div class="avantage-desc">
+            <h3>Five Pizza</h3>
+            <p>Pour une pizza achetée, <b>une boisson offerte</b>.</p>
+            <small>Valable toute l’année sur présentation de la carte Cube.</small>
+          </div>
+        </div>
+        <div class="avantage-partenaire">
+          <div class="avantage-logo">
+            <img src="img/burger-king.png" alt="Logo Burger King">
+          </div>
+          <div class="avantage-desc">
+            <h3>Burger King</h3>
+            <p><b>-10%</b> sur une commande par jour.</p>
+            <small>Sur présentation de la carte Cube à la caisse.</small>
+          </div>
+        </div>
+        <div class="avantage-partenaire">
+          <div class="avantage-logo">
+            <img src="img/anousti-fast-food.png" alt="Logo Anousti Fast Food">
+          </div>
+          <div class="avantage-desc">
+            <h3>Anousti Fast Food</h3>
+            <p><b>Boisson offerte</b> sur le menu kebab, pita et tacos.</p>
+            <small>Offre valable uniquement avec la carte Cube.</small>
           </div>
         </div>
       </div>
