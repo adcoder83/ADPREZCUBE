@@ -13,10 +13,6 @@
   --transition: 0.18s cubic-bezier(.4,0,.2,1);
 }
 
-html, body {
-  height: 100%;
-}
-
 body {
   margin: 0;
   font-family: 'Segoe UI', 'Arial', sans-serif;
@@ -40,16 +36,12 @@ nav {
   box-shadow: 0 2px 12px 0 rgba(34,49,63,0.07);
 }
 
-.logo {
-  font-size: 2.1em;
-  font-weight: 800;
-  color: var(--green-dark);
-  letter-spacing: 3px;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  text-transform: uppercase;
+.logo img {
+  display: block;
+  height: 48px;
+  width: auto;
 }
 
-/* MENU HAMBURGER PAR DÉFAUT: caché */
 nav .menu-toggle {
   display: none;
 }
@@ -141,64 +133,63 @@ h3 {
   line-height: 1.7;
 }
 
-.home-cta {
+/* ---- AVANTAGES PARTENAIRES ---- */
+.avantages-list {
   display: flex;
-  gap: 1.2em;
-  margin-top: 1em;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 20px;
 }
-
-.btn,
-.inline-link {
-  background: var(--green);
-  color: var(--white);
-  border: none;
-  border-radius: 22px;
-  padding: 13px 38px;
-  font-size: 1em;
-  cursor: pointer;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background var(--transition), color var(--transition), box-shadow var(--transition), transform 0.12s;
-  box-shadow: 0 3px 16px 0 rgba(75,123,58,0.08);
-  outline: none;
-  border: 1.5px solid transparent;
-  display: inline-block;
+.avantage-partenaire {
+  display: flex;
+  align-items: center;
+  background: var(--gray-light);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 12px 0 rgba(75,123,58,0.10);
+  padding: 18px 22px;
+  gap: 22px;
 }
-
-.btn.outline {
-  background: var(--white);
+.avantage-logo {
+  width: 74px;
+  height: 74px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--green-light);
+}
+.avantage-logo img {
+  max-width: 100%;
+  max-height: 74px;
+  object-fit: contain;
+}
+.avantage-desc {
+  flex: 1;
+}
+.avantage-desc h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.15em;
   color: var(--green-dark);
-  border: 1.5px solid var(--green-light);
-  box-shadow: none;
+  font-weight: 700;
+}
+.avantage-desc p {
+  margin: 0;
+  font-size: 1.05em;
+  color: #222;
 }
 
-.btn:hover, .inline-link:hover, .btn:focus {
-  background: var(--green-dark);
-  color: var(--white);
-  border: 1.5px solid var(--green);
-  transform: translateY(-2px) scale(1.04);
-}
-
-.inline-link {
-  padding: 6px 18px;
-  font-size: 1em;
-}
-
-ul {
-  margin-left: 1.2em;
-  margin-bottom: 2em;
-  font-size: 1.08em;
-}
-
-.event-list, .members-grid {
+/* Membres */
+.members-grid {
   display: grid;
   gap: 22px;
   grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
   margin-bottom: 2em;
   margin-top: 7px;
 }
-
-.event-card, .member-card {
+.member-card {
   background: var(--gray-light);
   border-radius: var(--radius);
   box-shadow: 0 2px 12px 0 rgba(75,123,58,0.10);
@@ -211,94 +202,28 @@ ul {
   border-left: 4px solid var(--green);
   transition: box-shadow .18s;
 }
-
-.event-card:hover, .member-card:hover {
+.member-card:hover {
   box-shadow: 0 8px 24px 0 rgba(75,123,58,0.18);
   border-left: 4px solid var(--green-dark);
 }
-
-.event-date {
-  font-size: 1.07em;
-  background: var(--green);
-  color: var(--white);
-  border-radius: 14px;
-  padding: 5px 15px;
-  margin-bottom: 7px;
-  font-weight: 700;
-  display: inline-block;
-  letter-spacing: 1px;
-}
-
-.event-card.next .event-date {
-  background: var(--green-light);
-  color: var(--green-dark);
-}
-
-.event-place {
-  font-size: 0.98em;
-  color: var(--green-dark);
-  opacity: 0.8;
-  font-weight: 500;
-}
-
 .member-card h3 {
   margin: 0 0 4px 0;
   font-size: 1.08em;
   color: var(--green);
   font-weight: 700;
 }
-
 .member-card p {
   margin: 0 0 3px 0;
   font-weight: 500;
 }
-
 .member-card a {
   color: var(--green-dark);
   font-size: 0.97em;
   text-decoration: underline;
   word-break: break-all;
 }
-
 .members-block {
   margin-bottom: 2.2em;
-}
-
-.join-text {
-  font-size: 1.13em;
-  text-align: center;
-  margin-top: 2em;
-  color: #466141;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
-  margin-top: 18px;
-}
-
-label {
-  font-weight: 600;
-  color: var(--green-dark);
-  margin-bottom: 3px;
-}
-
-input[type="text"], input[type="email"], textarea {
-  border: 1.5px solid var(--green-light);
-  background: var(--gray-light);
-  border-radius: 11px;
-  padding: 10px 14px;
-  font-size: 1em;
-  color: var(--black);
-  font-family: inherit;
-  outline: none;
-  transition: border var(--transition), box-shadow var(--transition);
-}
-
-input:focus, textarea:focus {
-  border: 1.5px solid var(--green);
-  box-shadow: 0 2px 12px 0 rgba(75,123,58,0.10);
 }
 
 footer {
@@ -328,11 +253,9 @@ footer {
     padding: 0 8px;
     height: 56px;
   }
-  .logo {
-    font-size: 1.1em;
-    letter-spacing: 1px;
+  .logo img {
+    height: 38px;
   }
-  /* Affiche le bouton hamburger */
   nav .menu-toggle {
     display: block;
     background: none;
@@ -378,23 +301,25 @@ footer {
     border-radius: 0;
     min-width: 0;
   }
-  .event-list, .members-grid {
+  .avantage-partenaire {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 9px;
+  }
+  .avantage-logo {
+    width: 60px;
+    height: 60px;
+  }
+  .members-grid {
     grid-template-columns: 1fr;
     gap: 14px;
-  }
-  .btn, .inline-link {
-    padding: 10px 10px;
-    font-size: 1em;
   }
   footer {
     font-size: 0.95em;
     padding: 13px 0 10px 0;
     margin-top: 28px;
     border-radius: 0;
-  }
-  form {
-    gap: 8px;
-    margin-top: 8px;
   }
   h1 {
     font-size: 1.3em;
@@ -408,7 +333,7 @@ footer {
   }
 }
 
-/* Amélioration accessibilité : focus visible */
+/* Accessibilité */
 :focus-visible {
   outline: 2px solid var(--green);
   outline-offset: 2px;
